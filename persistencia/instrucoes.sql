@@ -5,7 +5,7 @@ USE sistema;
 CREATE TABLE categoria(
     cat_codigo INT NOT NULL AUTO_INCREMENT,
     cat_descricao VARCHAR(100) NOT NULL,
-    CONSTRAINT pk_categoria PRIMARY KEY(codigo)    
+    CONSTRAINT pk_categoria PRIMARY KEY(cat_codigo)    
 );
 
 CREATE TABLE produto(
@@ -16,7 +16,7 @@ CREATE TABLE produto(
     prod_dataValidade DATE NOT NULL,
     prod_qtdEstoque INT NOT NULL,
     cat_codigo INT NOT NULL,
-    CONSTRAINT pk_produto PRIMARY KEY(codigo),
+    CONSTRAINT pk_produto PRIMARY KEY(prod_codigo),
     CONSTRAINT fk_categoria FOREIGN KEY(cat_codigo) 
         REFERENCES categoria(cat_codigo)
 );
