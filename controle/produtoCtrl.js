@@ -14,7 +14,7 @@ export default class ProdutoCtrl {
 
             if (descricao && precoCusto && precoVenda && dataValidade && qtdEstoque && categoria) {
                 const produto = new Produto(0, descricao, precoCusto, precoVenda, dataValidade, qtdEstoque, categoria);
-                
+ 
                 produto.gravar().then(() => {
                     resposta.status(200).json({
                         "status": true,
@@ -71,7 +71,7 @@ export default class ProdutoCtrl {
             else {
                 resposta.status(400).json({
                     "status": false,
-                    "mensagem": "Por favor, cheque se não esqueceu de nenhuma informação do produto!"
+                    "mensagem": "Por favor, preencha todos os campos obrigatórios!"
                 });
             }
         }
@@ -93,7 +93,7 @@ export default class ProdutoCtrl {
                 produto.atualizar().then(() => {
                     resposta.status(200).json({
                         "status": true,
-                        "mensagem": "produto excluído com sucesso!"
+                        "mensagem": "Produto excluído com sucesso!"
                     });
                 })
                     .catch((erro) => {
@@ -120,5 +120,33 @@ export default class ProdutoCtrl {
 
     consultar(requisicao, resposta) {
         resposta.type('application/json');
+        //express, por meio do controle de rotas, será preparado para esperar um termo de busca
+        let termo = requisicao.params.termo;
+        if(!termo){
+            termo="";
+        }
+        if(requisicao.method === "GET"){
+            const produto = new Produto();
+            produto.consultar(termo).then((listaProdutos)=>{
+                resposta.json(
+                    {
+                        "status":true,
+                        "listaProdutos":listaProdutos
+                    });
+            })
+            .catch((erro)=>{
+                resposta.status(500).json({
+                        "status":false,
+                        "mensagem":"Erro ao consultar o produto!" +erro.message
+                })
+
+            })
+        }
+        else {
+            resposta.status(400).json({
+                "status": false,
+                "mensagem": "Por favor, utilize o método GET para consultar um produto!"
+            });
+        }
     }
 }

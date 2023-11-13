@@ -31,6 +31,7 @@ export default class CategoriaDAO{
             glocal.poolConexoes.releaseConnections(conexao);
         }
     }
+
     async consultar(parametroConsulta){
         let sql='';
         let parametros=[];
@@ -42,18 +43,17 @@ export default class CategoriaDAO{
         }
         else{
             //consultar pela descrição
-            if(!parametroConsulta)
-                parametroConsulta="";
-            else{
-                sql='SELECT * FROM categoria WHERE cat_categoria like ?';
-                parametros = ['%'+parametroConsulta+'%'];
+            if (!parametroConsulta){
+                parametroConsulta = '';
             }
+            sql = "SELECT * FROM categoria WHERE cat_descricao like ?";
+            parametros = ['%'+parametroConsulta+'%'];
         }
         const conexao = await conectar();
-        const [registros, campos] = conexao.execute(sql, execute);
+        const [registros, campos] = await conexao.execute(sql,parametros);
         let listaCategorias = [];
-        for(const registro of registros){
-            const categoria = new Categoria(registro.cat_codigo, registro.cat_descricao);
+        for (const registro of registros){
+            const categoria = new Categoria(registro.cat_codigo,registro.cat_descricao);
             listaCategorias.push(categoria);
         }
         return listaCategorias;

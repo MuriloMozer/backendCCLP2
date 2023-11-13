@@ -1,16 +1,18 @@
-import Produto from './modelo/produto.js';
-import Categoria from './modelo/categoria.js';
+import express from 'express';
+import rotaCategoria from './rotas/rotaCategoria';
+import rotaProduto from './rotas/rotaProduto';
 
-//const categoria = new Categoria(0,'Calçados infantis');
+//aplicação HTTP pronta, bastando parametrizá-la
+const host = "0.0.0.0";
+const porta = 4000;
 
-// categoria.gravar.then(()=>{
-//     console.log(categoria.id);
-// });
-const categoria = new Categoria();
-categoria.consultar('calçado').then((listaCategorias)=>{
-    console.log(listaCategorias);
+const app = express();
+//preparar a app para encontrar o formato JSON
+app.use(express.json());
+
+app.use('/categoria',rotaCategoria);
+app.use('/produto',rotaProduto);
+
+app.listen(porta, host, ()=>{
+    console.log(`API do sistema em execução:${host}:${porta}`);
 })
-
-const produto = new Produto(0, 'Tênis Infantl AllStar', 55.36, 159.99, 'indaterminada', 10, categoria);
-
-console.log(produto.toJSON());

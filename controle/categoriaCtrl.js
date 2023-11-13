@@ -115,6 +115,33 @@ export default class CategoriaCtrl {
 
     consultar(requisicao, resposta) {
         resposta.type('application/json');
+        //express, por meio do controle de rotas, será preparado para esperar um termo de busca
+        let termo = requisicao.params.termo;
+        if(!termo){
+            termo="";
+        }
+        if(requisicao.method === "GET"){
+            const categoria = new Categoria();
+            categoria.consultar(termo).then((listaCategorias)=>{
+                resposta.json(
+                    {
+                        "status":true,
+                        "listaCategorias":listaCategorias
+                    });
+            })
+            .catch((erro)=>{
+                resposta.status(500).json({
+                        "status":false,
+                        "mensagem":"Erro ao consultar a categoria!" +erro.message
+                })
 
+            })
+        }
+        else {
+            resposta.status(400).json({
+                "status": false,
+                "mensagem": "Por favor, utilize o método GET para consultar um produto!"
+            });
+        }
     }
 }
