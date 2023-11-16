@@ -38,7 +38,6 @@ export default class CategoriaCtrl {
             });
         }
     }
-
     atualizar(requisicao, resposta) {
         resposta.type('application/json');
         if ((requisicao.method === 'PUT' || requisicao.method === 'PATCH') && requisicao.is('application/json')) {
@@ -75,7 +74,6 @@ export default class CategoriaCtrl {
             });
         }
     }
-
     excluir(requisicao, resposta) {
         resposta.type('application/json');
         if (requisicao.method === 'DELETE' && requisicao.is('application/json')) {
@@ -84,7 +82,7 @@ export default class CategoriaCtrl {
             if (codigo) {
                 const categoria = new Categoria(codigo);
                 //resolver a promise
-                categoria.atualizar().then(() => {
+                categoria.excluir().then(() => {
                     resposta.status(200).json({
                         "status": true,
                         "mensagem": "Categoria excluída com sucesso!"
@@ -111,36 +109,37 @@ export default class CategoriaCtrl {
             });
         }
     }
-
-
     consultar(requisicao, resposta) {
         resposta.type('application/json');
-        //express, por meio do controle de rotas, será preparado para esperar um termo de busca
+        //express, por meio do controle de rotas, será
+        //preparado para esperar um termo de busca
         let termo = requisicao.params.termo;
-        if(!termo){
-            termo="";
+        if (!termo){
+            termo = "";
         }
-        if(requisicao.method === "GET"){
+        if (requisicao.method === "GET"){
             const categoria = new Categoria();
             categoria.consultar(termo).then((listaCategorias)=>{
                 resposta.json(
                     {
-                        "status":true,
-                        "listaCategorias":listaCategorias
+                        status:true,
+                        listaCategorias
                     });
             })
             .catch((erro)=>{
-                resposta.status(500).json({
-                        "status":false,
-                        "mensagem":"Erro ao consultar a categoria!" +erro.message
-                })
-
-            })
+                resposta.json(
+                    {
+                        status:false,
+                        mensagem:"Não foi possível obter as categorias: " + erro.message
+                    }
+                );
+            });
         }
-        else {
+        else 
+        {
             resposta.status(400).json({
                 "status": false,
-                "mensagem": "Por favor, utilize o método GET para consultar um produto!"
+                "mensagem": "Por favor, utilize o método GET para consultar categorias!"
             });
         }
     }

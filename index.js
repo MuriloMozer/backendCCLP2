@@ -4,7 +4,7 @@ import rotaProduto from './rotas/rotaProduto';
 
 //aplicação HTTP pronta, bastando parametrizá-la
 const host = "0.0.0.0";
-const porta = 4000;
+const porta = 8080;
 
 const app = express();
 //preparar a app para encontrar o formato JSON

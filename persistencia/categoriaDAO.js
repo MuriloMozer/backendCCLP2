@@ -1,34 +1,35 @@
-import Categoria from "../modelo/categoria.js"
+import Categoria from "../modelo/categoria.js";
 import conectar from "./conexao.js";
-
-//DAO = Data Access Object --> Objeto de acesso aos dados 
+//DAO = Data Access Object -> Objeto de acesso aos dados
 export default class CategoriaDAO{
     async gravar(categoria){
-        if( categoria instanceof Categoria){
-            const sql= "INSERT INTO categoria(cat_descricao) VALLUES(?)";
-            const parametros= [categoria.descricao];
+        if (categoria instanceof Categoria){
+            const sql = "INSERT INTO categoria(cat_descricao) VALUES(?)"; 
+            const parametros = [categoria.descricao];
             const conexao = await conectar(); //retorna uma conexão
-            const retorno = await conexao.execute(sql,parametros);//prepara a sql e depois
-            categoria.id = retorno[0].insertId;
-            glocal.poolConexoes.releaseConnections(conexao);
+            const retorno = await conexao.execute(sql,parametros); //prepara a sql e depois executa
+            categoria.codigo = retorno[0].insertId;
+            global.poolConexoes.releaseConnection(conexao);
         }
     }
+
     async atualizar(categoria){
-        if(categoria instanceof Categoria){
-            const sql= "UPDATE categoria(cat_descricao) SET cat_descricao WHERE cat_codigo = ?";
-            const parametros= [categoria.descricao, categoria.codigo];
-            const conexao = await conectar();
-            await conexao.execute(sql,parametros);
-            glocal.poolConexoes.releaseConnections(conexao);
+        if (categoria instanceof Categoria){
+            const sql = "UPDATE categoria SET cat_descricao = ? WHERE cat_codigo = ?"; 
+            const parametros = [categoria.descricao, categoria.codigo];
+            const conexao = await conectar(); //retorna uma conexão
+            await conexao.execute(sql,parametros); //prepara a sql e depois executa
+            global.poolConexoes.releaseConnection(conexao);
         }
     }
+
     async excluir(categoria){
-        if(categoria instanceof Categoria){
-            const sql= "INSERT INTO categoria(cat_descricao) VALLUES(?)";
-            const parametros= [categoria.codigo];
-            const conexao = await conectar();
-            await conexao.execute(sql,parametros);
-            glocal.poolConexoes.releaseConnections(conexao);
+        if (categoria instanceof Categoria){
+            const sql = "DELETE FROM categoria WHERE cat_codigo = ?"; 
+            const parametros = [categoria.codigo];
+            const conexao = await conectar(); //retorna uma conexão
+            await conexao.execute(sql,parametros); //prepara a sql e depois executa
+            global.poolConexoes.releaseConnection(conexao);
         }
     }
 
@@ -36,13 +37,13 @@ export default class CategoriaDAO{
         let sql='';
         let parametros=[];
         //é um número inteiro?
-        if(!isNaN(parseInt(parametroConsulta))){
-           //consultar pelo código da categoria
-           sql='SELECT * FROM categoria WHERE cat_codigo = ? ORDER BY cat_descricao';
-           parametros = [parametroConsulta];
+        if (!isNaN(parseInt(parametroConsulta))){
+            //consultar pelo código da categoria
+            sql='SELECT * FROM categoria WHERE cat_codigo = ? order by cat_descricao';
+            parametros = [parametroConsulta];
         }
         else{
-            //consultar pela descrição
+            //consultar pela descricao
             if (!parametroConsulta){
                 parametroConsulta = '';
             }
