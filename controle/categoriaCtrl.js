@@ -120,10 +120,11 @@ export default class CategoriaCtrl {
         if (requisicao.method === "GET"){
             const categoria = new Categoria();
             categoria.consultar(termo).then((listaCategorias)=>{
+                console.log(listaCategorias);
                 resposta.json(
                     {
-                        status:true,
-                        listaCategorias
+                        "status":true,
+                        "listaCategorias":listaCategorias
                     });
             })
             .catch((erro)=>{

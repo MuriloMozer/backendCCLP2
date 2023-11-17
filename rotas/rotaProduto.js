@@ -1,5 +1,5 @@
 import {Router} from "express";
-import ProdutoCtrl from "../controle/produtoCtrl";
+import ProdutoCtrl from "../controle/produtoCtrl.js";
 
 const prodCtrl = new ProdutoCtrl();
 const rotaProduto = new Router();

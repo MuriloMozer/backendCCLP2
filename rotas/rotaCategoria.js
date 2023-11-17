@@ -1,5 +1,5 @@
 import {Router} from "express";
-import CategoriaCtrl from "../controle/categoriaCtrl";
+import CategoriaCtrl from "../controle/categoriaCtrl.js";
 
 //rotas é o mapeamento das requisções da web para um determinado endpoint da aplicação
 

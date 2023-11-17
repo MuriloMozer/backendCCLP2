@@ -46,8 +46,8 @@ export default class Categoria{
         const catDAO = new CategoriaDAO();
         await catDAO.atualizar(this);
     }
-    async consultar(){
+    async consultar(param){
         const catDAO = new CategoriaDAO();
-        await catDAO.consultar(this);
+        return await catDAO.consultar(param);
     }
 }

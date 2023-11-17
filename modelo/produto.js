@@ -91,8 +91,8 @@ export default class Produto{
         const prodDAO = new ProdutoDAO();
         await prodDAO.atualizar(this);
     }
-    async consultar(){
+    async consultar(param){
         const prodDAO = new ProdutoDAO();
-        await prodDAO.consultar(this);
+        return await prodDAO.consultar(param);
     }
 }

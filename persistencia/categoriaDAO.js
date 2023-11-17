@@ -57,6 +57,8 @@ export default class CategoriaDAO{
             const categoria = new Categoria(registro.cat_codigo,registro.cat_descricao);
             listaCategorias.push(categoria);
         }
+        console.log(listaCategorias);
+        
         return listaCategorias;
     }
 }
